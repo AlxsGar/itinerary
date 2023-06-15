@@ -1,24 +1,24 @@
-import logo from './logo.svg';
+import React, { useContext } from 'react';
 import './App.css';
+import Navbar from './Components/Navbar/Navbar';
+
+import Home from './Components/Home/Home'
+import AuthContext from './Components/Auth/auth-context';
+import Login from './Components/Login/Login';
+import TeacherSchedule from './Components/ViewSchedules/TeacherSchedule/TeacherSchedule';
 
 function App() {
+  const ctx = useContext(AuthContext);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <React.Fragment>
+      <Navbar/>
+      <main>
+        {!ctx.isLoggedIn && <Login/>}
+        {ctx.isLoggedIn && ctx.currentPageState === 0 && <Home/>}
+        {ctx.isLoggedIn && ctx.currentPageState === 1 && <TeacherSchedule/>}
+      </main>
+    </React.Fragment>
   );
 }
 
