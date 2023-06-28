@@ -1,0 +1,26 @@
+.tableSection {
+    width: 85%;
+    max-width: 50rem;
+    padding: 3rem;
+    margin: 2rem auto;
+    text-align: center;
+}
+
+.tableSection h1 {
+    color: blue;
+}
+
+@media screen and (max-width: 600px) {
+    .tableSection {
+        width: 90%;
+        max-width: 25rem;
+    }
+}
+
+.table{
+    width: 100%;
+}
+
+.th{
+    color: red;
+}

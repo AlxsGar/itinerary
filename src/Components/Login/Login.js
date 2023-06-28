@@ -15,7 +15,7 @@ function Login() {
 
   return (
     <Card className={classes.login}>
-        <p>Hola</p>
+        <h1>Pagina de ingresar la cuenta</h1>
         <Button onClick={submitHandler}>Ingresar</Button>
     </Card>
   )
