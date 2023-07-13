@@ -6,9 +6,6 @@ function Navigation() {
     <nav className={classes["nav"]}>
       <ul>
         <li>
-            <a href="/admin">Administración</a>
-        </li>
-        <li>
             <button>Logout</button>
         </li>
       </ul>

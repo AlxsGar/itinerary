@@ -1,0 +1,26 @@
+
+
+.registryForm{
+    margin-top: 2rem;
+}
+
+.registryForm label{
+    font-size: 150%;
+    font-weight: bold;
+    margin-right: 2rem;
+    color: rgb(83, 83, 83);
+}
+
+.registryForm input{
+    border-radius: 15px;
+    border-width: 50%;
+    height: 1.5rem;
+    width: 50%;
+    justify-content: right;
+}
+
+.control{
+    margin: 1rem 0;
+    display: flex;
+    justify-content: space-between;
+}

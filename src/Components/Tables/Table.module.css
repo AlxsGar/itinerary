@@ -4,10 +4,11 @@
     padding: 3rem;
     margin: 2rem auto;
     text-align: center;
+    overflow: scroll;
 }
 
 .tableSection h1 {
-    color: blue;
+    color: black;
 }
 
 @media screen and (max-width: 600px) {
@@ -17,10 +18,38 @@
     }
 }
 
-.table{
-    width: 100%;
+table {
+    border: 2px solid forestgreen;
+    width: 800px;
+    height: 200px;
+    box-sizing: border-box;
+}
+ 
+th:nth-child(n+2){
+    border-bottom: 1px solid black;
+    color: green;
 }
 
-.th{
-    color: red;
+th:hover:nth-child(n+2){
+    cursor:pointer;
+    font-weight: bold;
+    font-size: larger;
+}
+ 
+td:nth-child(1){
+    color: green;
+}
+
+td:hover:nth-child(1){
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.tableSection tr button{
+    border-radius: 10px;
+    padding: 2rem;
+    width: 100%;
+    overflow: visible;
+    box-sizing: border-box;
+    background-color: transparent;
 }

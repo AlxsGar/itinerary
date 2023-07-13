@@ -13,19 +13,24 @@ function Administration() {
         authCtx.onSelectPage(4);
     }
 
-    const scheduleHandler = () => {
+    const registryHandler = () => {
         authCtx.onSelectPage(5);
     }
 
     return (
         <React.Fragment>
             <Card className={classes.admin}>
-                <h1>Administra Maestros</h1>
-                <Button onClick={teacherHandler}>Administra Maestros</Button>
+                <h1>Registro</h1>
+                <p>Registra y/o edita la información de los maestros y materias.</p>
+                <Button onClick={registryHandler}>Ir a registro</Button>
             </Card>
             <Card className={classes.admin}>
-                <h1>Administra Materias</h1>
-                <Button onClick={scheduleHandler}>Administra Materias</Button>
+                <h1>Administración de maestros</h1>
+                <p>
+                    Asigna las materias a los maestros, 
+                    ve sus horarios o edita la información.
+                </p>
+                <Button onClick={teacherHandler}>Administra Maestros</Button>
             </Card>
         </React.Fragment>
     )

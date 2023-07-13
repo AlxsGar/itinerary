@@ -1,17 +1,13 @@
 import React from "react";
-
-import classes from './TeacherSchedule.module.css'
-
-import Card from "../../Elements/Card/Card";
 import Table from '../../Tables/Table';
 
-function TeacherSchedule() {
+function TeacherSchedule(props) {
+  const handleSave = (info) => {
+    props.onClick(info)
+  }
   return (
     <React.Fragment>
-      <Card className={classes.teacherschedule}>
-        TeacherSchedule
-      </Card>
-      <Table />
+      <Table data={props.teacherInfo} onClick={handleSave}/>
     </React.Fragment>
   );
 }

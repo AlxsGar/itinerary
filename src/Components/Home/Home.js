@@ -17,10 +17,6 @@ function Home() {
     authCtx.onSelectPage(1);
   }
 
-  const teacherHandler = () => {
-    authCtx.onSelectPage(2);
-  }
-
   return (
     <React.Fragment>
       <Card className={classes.home}>
@@ -32,11 +28,6 @@ function Home() {
         <h1>Ver Horarios</h1>
         <p>Ve los horarios de los grupos registrados</p>
         <Button onClick={scheduleHandler}>Ir a horarios</Button>
-      </Card>
-      <Card className={classes.home}>
-        <h1>Ver Maestros</h1>
-        <p>Administra los maestros, ve sus materias, horarios y demas información</p>
-        <Button onClick={teacherHandler}>Ir a maestros</Button>
       </Card>
     </React.Fragment>
   );

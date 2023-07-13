@@ -47,23 +47,13 @@ function AdminAdd(props) {
     let data = {
       name: teacherName,
       subjects: subjectList,
-      itinerary: [
-        'Available', 'Available', 'Available', 'Available', 'Available',
-        'Available', 'Available', 'Available', 'Available', 'Available',
-        'Available', 'Available', 'Available', 'Available', 'Available',
-        'Available', 'Available', 'Available', 'Available', 'Available',
-        'Available', 'Available', 'Available', 'Available', 'Available',
-        'Available', 'Available', 'Available', 'Available', 'Available',
-        'Available', 'Available', 'Available', 'Available', 'Available',
-        'Available', 'Available', 'Available', 'Available', 'Available',
-        'Available', 'Available', 'Available', 'Available', 'Available',
-        'Available', 'Available', 'Available', 'Available', 'Available',
-        'Available', 'Available', 'Available', 'Available', 'Available',
-        'Available', 'Available', 'Available', 'Available', 'Available',
-        'Available', 'Available', 'Available', 'Available', 'Available',
-        'Available', 'Available', 'Available', 'Available', 'Available',
-        'Available', 'Available', 'Available', 'Available', 'Available',
-      ]
+      itinerary: {
+        monday: ['Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available'],
+        tuesday: ['Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available'],     
+        wednesday: ['Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available'],
+        thursday: ['Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available'],
+        friday: ['Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available']
+      }
     }
 
     try {
@@ -84,6 +74,7 @@ function AdminAdd(props) {
           <div className={classes.control}>
             <label>Maestro:</label>
             <select name='name' onChange={handleNameChange}>
+              <option selected disabled>Selecciona maestro</option>
               {props.teachers.map(teacher => (
                 <option key={teacher.name} value={teacher.name}>{teacher.name}</option>
               ))}

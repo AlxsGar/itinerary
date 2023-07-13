@@ -16,17 +16,18 @@ function AdminTeacher() {
     const [isAdding, setIsAdding] = useState(false);
 
     const [teachersList, setTeachersList] = useState([]);
+    const [teachersInfo, setTeachersInfo] = useState([]);
     const [subjectsList, setSubjectsList] = useState([]);
 
     async function fecthTeachers(e) {
         e.preventDefault();
         //const loadedTeachers = [];
 
-        const querySnapshot = await getDocs(collection(firestore, "teachers"));
+        const querySnapshot = await getDocs(collection(firestore, "teachersClassesInfo"));
         setTeachersList([]);
         querySnapshot.forEach((doc) => {
             // doc.data() is never undefined for query doc snapshots
-            setTeachersList(current => [...current, doc.data()]);
+            setTeachersInfo(current => [...current, doc.data()]);
         });
 
         setLoaded(true);
@@ -52,7 +53,11 @@ function AdminTeacher() {
             setSubjectsList(current => [...current, doc.data()]);
         });
 
-        setIsAdding(true)
+        if (isAdding) {
+            setIsAdding(false)
+        } else {
+            setIsAdding(true)
+        }
 
     }
 
@@ -60,14 +65,14 @@ function AdminTeacher() {
         <React.Fragment>
             <Card className={classes.adminTeacher}>
                 <h1>Lista de Maestros</h1>
-                <section className={classes.buttonSection}>
-                    <Button onClick={addHandler}>+</Button>
-                    {isAdding && <AdminAdd subjects={subjectsList} teachers={teachersList}/>}
-                </section>
+                <Button onClick={addHandler}>Asignar Materias</Button>
                 <Button onClick={fecthTeachers}>Ver Lista</Button>
+                <section className={classes.buttonSection}>
+                    {isAdding && <AdminAdd subjects={subjectsList} teachers={teachersList} />}
+                </section>
                 {loaded && <Card className={classes.adminTeacher}>
-                    {teachersList.map((teacher) => (
-                        <TeacherCard key={teacher.name} name={teacher.name} subjects={teacher.subjects}/>
+                    {teachersInfo.map((teacher) => (
+                        <TeacherCard key={teacher.name} name={teacher.name} subjects={teacher.subjects} />
                     ))}
                 </Card>}
             </Card>
