@@ -9,19 +9,19 @@ function ScheduleMenu() {
 
     const authCtx = useContext(AuthContext);
 
-    const handleTeacherSchedule = () => {
-        authCtx.onSelectPage(6);
+    const handleTeacherSchedule = (value) => {
+        authCtx.onSelectPage(value);
     }
 
   return (
     <React.Fragment>
         <Card className={classes.scheduleMenu}>
             <h1>Horarios de maestros</h1>
-            <Button onClick={handleTeacherSchedule}>Ver</Button>
+            <Button onClick={() => handleTeacherSchedule(6)}>Ver</Button>
         </Card>
         <Card className={classes.scheduleMenu}>
             <h1>Horarios de grupos</h1>
-            <Button onClick={handleTeacherSchedule}>Ver</Button>
+            <Button onClick={() => handleTeacherSchedule(7)}>Ver</Button>
         </Card>
     </React.Fragment>
   )

@@ -6,12 +6,12 @@ import Navbar from './Components/Navbar/Navbar';
 import Home from './Components/Home/Home'
 import AuthContext from './Components/Auth/auth-context';
 import Login from './Components/Login/Login';
-//import TeacherSchedule from './Components/ViewSchedules/TeacherSchedule/TeacherSchedule';
 import Administration from './Components/Administration/Administration';
 import AdminTeacher from './Components/Administration/AdminTeacher';
 import Registry from './Components/Administration/Registry';
 import ScheduleMenu from './Components/ViewSchedules/ScheduleMenu';
 import TeachersMenu from './Components/ViewSchedules/TeacherSchedule/TeachersMenu';
+import GroupScheduleMenu from './Components/ViewSchedules/GroupsSchedule/GroupScheduleMenu';
 
 function App() {
   const ctx = useContext(AuthContext);
@@ -27,6 +27,7 @@ function App() {
         {ctx.isLoggedIn && ctx.currentPageState === 4 && <AdminTeacher />}
         {ctx.isLoggedIn && ctx.currentPageState === 5 && <Registry />}
         {ctx.isLoggedIn && ctx.currentPageState === 6 && <TeachersMenu />}
+        {ctx.isLoggedIn && ctx.currentPageState === 7 && <GroupScheduleMenu />}
       </main>
     </React.Fragment>
   );

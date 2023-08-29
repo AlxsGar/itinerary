@@ -24,11 +24,6 @@ function Home() {
         <p>Administra los maestros, ve sus materias, horarios y demas información</p>
         <Button onClick={adminHandler}>Ir a maestros</Button>
       </Card>
-      <Card className={classes.home}>
-        <h1>Ver Horarios</h1>
-        <p>Ve los horarios de los grupos registrados</p>
-        <Button onClick={scheduleHandler}>Ir a horarios</Button>
-      </Card>
     </React.Fragment>
   );
 }
