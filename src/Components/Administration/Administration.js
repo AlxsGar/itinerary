@@ -5,7 +5,7 @@ import Card from '../Elements/Card/Card'
 
 
 import { firestore } from "../Firebase/Firebase"
-import { doc, addDoc, setDoc, getDocs, getDoc, collection } from "@firebase/firestore"
+import { doc, setDoc, getDocs, getDoc, collection } from "@firebase/firestore"
 
 import classes from './Administration.module.css'
 
@@ -13,24 +13,24 @@ function Administration() {
 
     const authCtx = useContext(AuthContext)
     const [isStarted, setIsStarted] = useState(false);
-    let groupData;
+
+
+    let date = new Date();
+    let cycle = date.getMonth() <= 6 ? 2 : 1;
+    cycle = 2;
+    let currentDate = date.getFullYear() + '-' + cycle;
 
     useEffect(() => {
         checkCycle();
-    }, []);
+    });
 
     async function checkCycle() {
-        let date = new Date();
-        let cycle = date.getMonth() <= 6 ? 2 : 1;
-        cycle = 2;
-        let currentDate = date.getFullYear() + '-' + cycle;
         const docRef = doc(collection(firestore, "groupCycles"), `${currentDate}`)
         const retrievedGroup = await getDoc(docRef);
 
 
         if (retrievedGroup.exists()) {
-            console.log("It exist")
-            groupData = retrievedGroup.data()
+            //let groupData = retrievedGroup.data()
             setIsStarted(true)
         } else {
             console.log("It doesnt exist")
@@ -38,6 +38,10 @@ function Administration() {
     }
 
     async function handleNewCycle(e) {
+        e.preventDefault();
+
+        // Set group cycle
+
         let newSubjectList = [];
         let sistemas = {
             semester2: { subjects: [], itinerary: {} },
@@ -69,7 +73,6 @@ function Administration() {
             if (cycle === 2) {
                 let newSubjectCycle = {
                     teacher: '',
-                    availability: true,
                 }
                 if (doc.data().semester % 2 === 0) {
                     Object.assign(newSubjectCycle, doc.data())
@@ -107,7 +110,6 @@ function Administration() {
             } else {
                 let newSubjectCycle = {
                     teacher: '',
-                    availability: true,
                 }
                 if (doc.data().semester % 2 !== 0) {
                     Object.assign(newSubjectCycle, doc.data())
@@ -125,12 +127,72 @@ function Administration() {
 
         setIsStarted(true)
 
-        e.preventDefault();
         try {
             setDoc(doc(firestore, "groupCycles", `${yearCycle}`), groupDivide);
         } catch (e) {
             console.log(e);
         }
+
+        // Set subject cycle
+
+        let subjectList = []
+
+        const obtainSubjects = await getDocs(collection(firestore, 'subjects'));
+        obtainSubjects.forEach(doc => {
+            if (cycle === 2) {
+                if (doc.data().semester % 2 === 0) {
+                    let newSubjectCycle = {
+                        availability: true,
+                        teacher: '',
+                    }
+                    Object.assign(newSubjectCycle, doc.data())
+                    subjectList.push(newSubjectCycle)
+                }
+            } else {
+                if (doc.data().semester % 2 !== 0) {
+                    let newSubjectCycle = {
+                        availability: true,
+                        teacher: '',
+                    }
+                    Object.assign(newSubjectCycle, doc.data())
+                    subjectList.push(newSubjectCycle)
+                }
+            }
+        })
+
+        let subjectCycleList = {
+            subjects: subjectList,
+        }
+
+        try {
+            setDoc(doc(firestore, "subjectCycles", `${yearCycle}`), subjectCycleList);
+        } catch (e) {
+            console.log(e);
+        }
+
+        // Set teacher cylce
+
+        let teacherList = [];
+
+        const obtainTeachers = await getDocs(collection(firestore, 'teachers'));
+        obtainTeachers.forEach(doc => {
+            let newTeacherCycle = {
+                availability: true,
+            }
+            Object.assign(newTeacherCycle, doc.data())
+            teacherList.push(newTeacherCycle)
+        })
+
+        let teacherCycleList = {
+            teachers: teacherList,
+        }
+
+        try {
+            setDoc(doc(firestore, "teacherCycles", `${yearCycle}`), teacherCycleList);
+        } catch (e) {
+            console.log(e);
+        }
+
     }
 
     const teacherHandler = () => {

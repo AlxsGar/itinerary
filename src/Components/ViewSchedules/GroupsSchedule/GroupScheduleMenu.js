@@ -4,14 +4,17 @@ import { doc, addDoc, setDoc, getDocs, getDoc, collection } from "@firebase/fire
 import { firestore } from "../../Firebase/Firebase"
 
 import classes from './GroupScheduleMenu.module.css'
+import Button from '../../Elements/Button/Button'
+import GroupItinerary from './GroupItinerary'
 
 function GroupScheduleMenu(props) {
   const [groupData, setGroupData] = useState();
-  const careers = ["industrial", "mecatrocina", "sistemas"]
+  const [submitted, setSubmitted] = useState(false);
+  const careers = ["industrial", "mecatronica", "sistemas"]
   const semesters = [1, 2, 3, 4, 5, 6, 7, 8, 9];
   const [selectedGroup, setSelectedGroup] = useState();
-  const [selectedCareer, setSelectedCareer] = useState();
-  const [selectedSemester, setSelectedSemester] = useState();
+  const [selectedCareer, setSelectedCareer] = useState("industrial");
+  const [selectedSemester, setSelectedSemester] = useState("2");
 
   let currentCycle;
 
@@ -45,23 +48,38 @@ function GroupScheduleMenu(props) {
     setSelectedSemester(e.target.value)
   }
 
+  const obtainGroupSchedule = (e) => {
+    //const obtainedGroupInfo = groupData.obj[selectedCareer].obj[selectedSemester];
+    const obtainedGroupInfo = groupData[selectedCareer]['semester'+selectedSemester];
+    setSelectedGroup(obtainedGroupInfo)
+    setSubmitted(true)
+  }
+
   return (
     <Card className={classes.groupMenu}>
-      <label>Seleccione Grupo</label>
-      <select onChange={handleCareerchange}>
-        {careers.map(career => (
-          <option value={career}>{"Ingenieria "+career}</option>
-        ))}
-      </select>
+      <div className={classes.selectionForm}>
+        <label>Seleccione Grupo</label>
+        <select onChange={handleCareerchange}>
+          {careers.map(career => (
+            <option key={career} value={career}>{"Ingenieria " + career}</option>
+          ))}
+        </select>
+      </div>
 
-      <label>Seleccione Semestre</label>
-      <select onChange={handleSemesterChange}>
-        {
-          semesters.map(semester => (
-            semester % 2 === 0 ? <option value={semester}>{"Semestre "+semester}</option> : null
-          ))
-        }
-      </select>
+      <div className={classes.selectionForm}>
+        <label>Seleccione Semestre</label>
+        <select onChange={handleSemesterChange}>
+          {
+            semesters.map(semester => (
+              semester % 2 === 0 ? <option key={semester} value={semester}>{"Semestre " + semester}</option> : null
+            ))
+          }
+        </select>
+      </div>
+
+      <Button onClick={obtainGroupSchedule}>Buscar Itinerario</Button>
+
+      {submitted && <GroupItinerary groupInformation={selectedGroup} name={"Ingenieria " + selectedCareer + " Semestre " + selectedSemester}/>}
 
     </Card>
   )

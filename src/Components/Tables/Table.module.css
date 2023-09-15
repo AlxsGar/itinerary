@@ -18,29 +18,29 @@
     }
 }
 
-table {
+.table {
     border: 2px solid forestgreen;
     width: 800px;
     height: 200px;
     box-sizing: border-box;
 }
  
-th:nth-child(n+2){
+.table th:nth-child(n+2){
     border-bottom: 1px solid black;
     color: green;
 }
 
-th:hover:nth-child(n+2){
+.table th:hover:nth-child(n+2){
     cursor:pointer;
     font-weight: bold;
     font-size: larger;
 }
  
-td:nth-child(1){
+.table td:nth-child(1){
     color: green;
 }
 
-td:hover:nth-child(1){
+.table td:hover:nth-child(1){
     font-weight: bold;
     cursor: pointer;
 }

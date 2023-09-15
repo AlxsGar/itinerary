@@ -1,0 +1,15 @@
+.itineraryModule{
+    width: 85%;
+    max-width: 50rem;
+    padding: 3rem;
+    margin: 2rem auto;
+    text-align: center;
+    overflow: scroll;
+}
+
+@media screen and (max-width: 600px) {
+    .itineraryModule {
+        width: 90%;
+        max-width: 25rem;
+    }
+}

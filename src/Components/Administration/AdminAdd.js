@@ -4,10 +4,15 @@ import Button from '../Elements/Button/Button'
 import classes from './AdminAdd.module.css'
 
 import { firestore } from "../Firebase/Firebase"
-import { addDoc, collection } from "@firebase/firestore"
+import { addDoc, collection, doc, updateDoc } from "@firebase/firestore"
 import Card from '../Elements/Card/Card'
 
 function AdminAdd(props) {
+
+  let date = new Date();
+  let cycle = date.getMonth() <= 6 ? 2 : 1;
+  cycle = 2;
+  let currentDate = date.getFullYear() + '-' + cycle;
 
   const [subjectList, setSubjectList] = useState([
     { subjectId: 0, subjectName: '' }
@@ -41,15 +46,40 @@ function AdminAdd(props) {
     setSubjectList([...subjectList, object])
   }
 
-  const addElement = (e) => {
+  async function addElement(e) {
     e.preventDefault();
+
+    props.teachers.map(teacher => {
+      if (teacherName === teacher.name) {
+        teacher['availability'] = false;
+      }
+    })
+
+    const teacherListRef = doc(collection(firestore, "teacherCycles"), `${currentDate}`)
+    await updateDoc(teacherListRef, {
+      teachers: props.teachers,
+    })
+
+    props.subjects.map(subject => (
+      subjectList.map(selectedSubject => {
+        if (parseInt(selectedSubject.subjectId) === subject.id) {
+          subject['availability'] = false;
+          subject['teacher'] = teacherName;
+        }
+      })
+    ))
+
+    const subjectListRef = doc(collection(firestore, "subjectCycles"), `${currentDate}`)
+    await updateDoc(subjectListRef, {
+      subjects: props.subjects,
+    })
 
     let data = {
       name: teacherName,
       subjects: subjectList,
       itinerary: {
         monday: ['Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available'],
-        tuesday: ['Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available'],     
+        tuesday: ['Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available'],
         wednesday: ['Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available'],
         thursday: ['Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available'],
         friday: ['Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available', 'Available']
@@ -74,9 +104,9 @@ function AdminAdd(props) {
           <div className={classes.control}>
             <label>Maestro:</label>
             <select name='name' onChange={handleNameChange}>
-              <option selected disabled>Selecciona maestro</option>
+              <option disabled>Selecciona maestro</option>
               {props.teachers.map(teacher => (
-                <option key={teacher.name} value={teacher.name}>{teacher.name}</option>
+                <option key={teacher.name} value={teacher.name} disabled={!teacher.availability}>{teacher.name}</option>
               ))}
             </select>
           </div>
@@ -85,8 +115,9 @@ function AdminAdd(props) {
               <div key={index} className={classes.control}>
                 <label>Materia:</label>
                 <select name='subject' onChange={event => handleChange(event, index)}>
+                  <option disabled>Selecciona materia</option>
                   {orderedSubjects.map(subject => (
-                    <option key={subject.id} value={`${subject.id},${subject.name}`}>{subject.career} {subject.semester} - {subject.name}</option>
+                    <option key={subject.id} value={`${subject.id},${subject.name}`} disabled={!subject.availability}>{subject.career} {subject.semester} - {subject.name}</option>
                   ))}
                 </select>
               </div>

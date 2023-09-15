@@ -6,7 +6,7 @@ import AdminAdd from './AdminAdd';
 import classes from './AdminTeacher.module.css'
 
 import { firestore } from "../Firebase/Firebase";
-import { getDocs, collection } from "@firebase/firestore"
+import { doc, getDoc, getDocs, collection } from "@firebase/firestore"
 import TeacherCard from './TeacherCard';
 
 
@@ -19,14 +19,17 @@ function AdminTeacher() {
     const [teachersInfo, setTeachersInfo] = useState([]);
     const [subjectsList, setSubjectsList] = useState([]);
 
+    let date = new Date();
+    let cycle = date.getMonth() <= 6 ? 2 : 1;
+    cycle = 2;
+    let currentDate = date.getFullYear() + '-' + cycle;
+
     async function fecthTeachers(e) {
         e.preventDefault();
-        //const loadedTeachers = [];
 
         const querySnapshot = await getDocs(collection(firestore, "teachersClassesInfo"));
         setTeachersList([]);
         querySnapshot.forEach((doc) => {
-            // doc.data() is never undefined for query doc snapshots
             setTeachersInfo(current => [...current, doc.data()]);
         });
 
@@ -37,21 +40,17 @@ function AdminTeacher() {
 
         e.preventDefault();
 
-        const queryTeachers = await getDocs(collection(firestore, "teachers"));
-        setTeachersList([]);
-        queryTeachers.forEach((doc) => {
-            // doc.data() is never undefined for query doc snapshots
-            setTeachersList(current => [...current, doc.data()]);
-        });
+        const teachersRef = doc(collection(firestore, "teacherCycles"), `${currentDate}`)
+        const retrievedTeachers = await getDoc(teachersRef);
 
-        //console.log(teachersList)
+        setTeachersList(retrievedTeachers.data().teachers)
 
-        const querySnapshot = await getDocs(collection(firestore, "subjects"));
-        setSubjectsList([]);
-        querySnapshot.forEach((doc) => {
-            // doc.data() is never undefined for query doc snapshots
-            setSubjectsList(current => [...current, doc.data()]);
-        });
+        //Obtain subjects
+
+        const subjectsRef = doc(collection(firestore, "subjectCycles"), `${currentDate}`)
+        const retrievedSubjects = await getDoc(subjectsRef);
+
+        setSubjectsList(retrievedSubjects.data().subjects)
 
         if (isAdding) {
             setIsAdding(false)
