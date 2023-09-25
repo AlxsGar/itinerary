@@ -1,4 +1,4 @@
-.itineraryModule{
+.itineraryModule {
     width: 85%;
     max-width: 50rem;
     padding: 3rem;
@@ -6,6 +6,20 @@
     text-align: center;
     overflow: scroll;
 }
+
+.infoSection table {
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 10px;
+}
+
+.infoSection th, .infoSection td {
+  width: 150px;
+  text-align: center;
+  border: 1px solid black;
+  padding: auto;
+}
+
 
 @media screen and (max-width: 600px) {
     .itineraryModule {

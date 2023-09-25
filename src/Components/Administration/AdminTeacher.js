@@ -28,7 +28,7 @@ function AdminTeacher() {
         e.preventDefault();
 
         const querySnapshot = await getDocs(collection(firestore, "teachersClassesInfo"));
-        setTeachersList([]);
+        setTeachersInfo([]);
         querySnapshot.forEach((doc) => {
             setTeachersInfo(current => [...current, doc.data()]);
         });

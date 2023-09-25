@@ -10,11 +10,17 @@ import GroupItinerary from './GroupItinerary'
 function GroupScheduleMenu(props) {
   const [groupData, setGroupData] = useState();
   const [submitted, setSubmitted] = useState(false);
+  const [subjectCycles, setSubjectCycles] = useState([]);
   const careers = ["industrial", "mecatronica", "sistemas"]
   const semesters = [1, 2, 3, 4, 5, 6, 7, 8, 9];
   const [selectedGroup, setSelectedGroup] = useState();
   const [selectedCareer, setSelectedCareer] = useState("industrial");
   const [selectedSemester, setSelectedSemester] = useState("2");
+
+  let date = new Date();
+  let cycle = date.getMonth() <= 6 ? 2 : 1;
+  cycle = 2;
+  let currentDate = date.getFullYear() + '-' + cycle;
 
   let currentCycle;
 
@@ -23,10 +29,6 @@ function GroupScheduleMenu(props) {
   }, []);
 
   async function checkCycle() {
-    let date = new Date();
-    let cycle = date.getMonth() <= 6 ? 2 : 1;
-    cycle = 2;
-    let currentDate = date.getFullYear() + '-' + cycle;
     const docRef = doc(collection(firestore, "groupCycles"), `${currentDate}`)
     const retrievedGroup = await getDoc(docRef);
 
@@ -48,10 +50,25 @@ function GroupScheduleMenu(props) {
     setSelectedSemester(e.target.value)
   }
 
-  const obtainGroupSchedule = (e) => {
+  async function obtainGroupSchedule(e) {
     //const obtainedGroupInfo = groupData.obj[selectedCareer].obj[selectedSemester];
     const obtainedGroupInfo = groupData[selectedCareer]['semester'+selectedSemester];
     setSelectedGroup(obtainedGroupInfo)
+
+    const group = "Ing. " + selectedCareer;
+
+    const docRef = doc(collection(firestore, "subjectCycles"), `${currentDate}`)
+    const retrievedSubjects = await getDoc(docRef);
+
+    let newSubjectList = [];
+
+    retrievedSubjects.data()['subjects'].map(subject => {
+      if(group.toLocaleLowerCase() === subject.career.toLocaleLowerCase() && parseInt(selectedSemester) === subject.semester){
+        newSubjectList.push(subject)
+      }
+    })
+
+    setSubjectCycles(newSubjectList);
     setSubmitted(true)
   }
 
@@ -79,7 +96,7 @@ function GroupScheduleMenu(props) {
 
       <Button onClick={obtainGroupSchedule}>Buscar Itinerario</Button>
 
-      {submitted && <GroupItinerary groupInformation={selectedGroup} name={"Ingenieria " + selectedCareer + " Semestre " + selectedSemester}/>}
+      {submitted && <GroupItinerary semesterSubjects={subjectCycles} groupInformation={selectedGroup} name={"Ingenieria " + selectedCareer + " Semestre " + selectedSemester}/>}
 
     </Card>
   )
